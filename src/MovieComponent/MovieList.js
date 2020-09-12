@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import MaterialTable from "material-table";
 import * as MoviesApi from "../crud/MoviesCrud";
 import { forwardRef } from 'react';
-
+import Avatar from '@material-ui/core/Avatar';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -18,13 +18,31 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Portlet,
   PortletBody,
   PortletHeader,
   PortletHeaderToolbar
 } from "../content/Portlet";
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+  },
+  large: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+  },
+}));
+
+
 class MovieList extends Component{
     state = { users: null}
     constructor(props) {
@@ -43,7 +61,7 @@ class MovieList extends Component{
         });
     }
     render() {
-
+      
       const tableIcons = {
         Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
         Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -63,8 +81,8 @@ class MovieList extends Component{
         ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
         ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
       };
-    
-
+      
+      
          const  {users}  = this.state;
          if (!users) {
             return null;
@@ -83,7 +101,22 @@ class MovieList extends Component{
                                 {
                                     title: "language",
                                     field: "language",
-                                }                                
+                                } ,
+                                {
+                                  title: "location",
+                                  field: "location",
+                              }  ,
+                              {
+                                title: "plot",
+                                field: "plot",
+                            } ,
+                            {
+                            
+                              title: 'poster',
+                              
+                              render: rowData =>(<div>  <Avatar alt="Remy Sharp" src={rowData.poster} /></div>)
+                             
+                          },                                
                            
                             ]}
                             data={users}
