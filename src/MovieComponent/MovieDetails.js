@@ -57,9 +57,9 @@ export default function MovieDetails(props) {
     }
   return (
 
-  <div>
+
     
-    {console.log(state.MovieDetails[0].stills)}
+    
 <GridList cellHeight={160} className={classes.gridList} cols={3}>
     {state.MovieDetails[0].stills.map((tile) => (
       <GridListTile key={tile}>
@@ -69,7 +69,7 @@ export default function MovieDetails(props) {
   </GridList>
 
     
-  </div>
+
   );
 
 }
