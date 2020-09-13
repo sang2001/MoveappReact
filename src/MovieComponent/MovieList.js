@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import MaterialTable from "material-table";
 import * as MoviesApi from "../crud/MoviesCrud";
 import { forwardRef } from 'react';
+import { Link } from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -25,6 +26,10 @@ import {
   PortletHeader,
   PortletHeaderToolbar
 } from "../content/Portlet";
+import {
+  Select,
+  MenuItem,
+} from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -49,7 +54,12 @@ class MovieList extends Component{
         super(props);
        
     }
-
+    MovieDetail(e,data)
+    {
+      e.preventDefault();
+      this.props.history.push({ pathname: "/MovieDetails", state: { imdbID: data.imdbID} })
+     
+    }
 
     componentDidMount() {
         MoviesApi.getMoviesList().then((data) => {
@@ -98,9 +108,12 @@ class MovieList extends Component{
           <MaterialTable icons={tableIcons}
                             title=""
                             columns={[
-                                {
+                              {
                                     title: "language",
-                                    field: "language",
+                                    //field: "language",
+                                    render:rowData=>(<div>
+                                       <a href="#" onClick={(e) =>{this.MovieDetail(e,rowData)}}>{rowData.language}</a>
+                                       </div>)
                                 } ,
                                 {
                                   title: "location",
@@ -108,16 +121,22 @@ class MovieList extends Component{
                               }  ,
                               {
                                 title: "plot",
-                                field: "plot",
+                                field: "plot"
+                                
                             } ,
                             {
                             
                               title: 'poster',
-                              
+                              sortable: false,
                               render: rowData =>(<div>  <Avatar alt="Remy Sharp" src={rowData.poster} /></div>)
-                             
-                          },                                
-                           
+                             },                                
+                            {
+                              title:'Sound Effects',
+                              render:rowData=>( 
+                                    rowData.soundEffects.map((dt, i) => {                              
+                               return (<MenuItem key={i} value={dt}>{dt}</MenuItem>)                                 
+                               })
+                            )}
                             ]}
                             data={users}
                             options={{
